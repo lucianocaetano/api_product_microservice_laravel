@@ -4,7 +4,7 @@ namespace Src\product\application\use_cases;
 
 use Src\product\application\contracts\in\UpdateProductUseCasePort;
 use Src\product\domain\entities\Product;
-use Src\product\models\repositories\ProductRepository;
+use Src\product\application\contracts\out\ProductRepository;
 
 class UpdateProductUseCase implements UpdateProductUseCasePort
 {
@@ -12,8 +12,8 @@ class UpdateProductUseCase implements UpdateProductUseCasePort
         private ProductRepository $repository
     ) {}
 
-    public function execute(Product $product): Product
+    public function execute(Product $product): void
     {
-        return $this->repository->update($product);
+        $this->repository->update($product);
     }
 }

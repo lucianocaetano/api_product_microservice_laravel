@@ -26,7 +26,7 @@ class UpdatedProductHandler
                 $event->getQuantity(),
                 $event->getAmount(),
                 $event->getCurrency(),
-                $event->getCategoryId()
+                $event->getCategorySlug()
             )
         );
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\product\domain\repositories;
+namespace Src\product\application\contracts\out;
 
 use Src\product\domain\entities\Product;
 
@@ -13,9 +13,9 @@ interface ProductRepository
      * ]
      */
     public function findAll(array $filter): array;
-
+    public function findByCategorySlug(string $id): array;
     public function findById(string $id): Product;
-    public function save(Product $product): Product;
-    public function update(Product $product): Product;
+    public function save(Product $product): void;
+    public function update(Product $product): void;
     public function delete(string $id): void;
 }

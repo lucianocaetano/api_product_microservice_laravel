@@ -65,7 +65,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pecl install rdkafka \
-    && echo extension=rdkafka.so" > /etc/php/8.4/cli/conf.d/20-rdkafka.ini \
+    && echo "extension=rdkafka.so" > /etc/php/8.4/cli/conf.d/20-rdkafka.ini \
     && echo "extension=rdkafka.so" > /etc/php/8.4/mods-available/rdkafka.ini
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.4

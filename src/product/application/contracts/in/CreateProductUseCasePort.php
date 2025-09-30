@@ -6,5 +6,5 @@ use Src\product\domain\entities\Product;
 
 interface CreateProductUseCasePort
 {
-    public function execute(Product $product): Product;
+    public function execute(Product $product): void;
 }

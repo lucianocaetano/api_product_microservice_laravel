@@ -4,7 +4,7 @@ namespace Src\product\application\use_cases;
 
 use Src\product\application\contracts\in\CreateProductUseCasePort;
 use Src\product\domain\entities\Product;
-use Src\product\domain\repositories\ProductRepository;
+use Src\product\application\contracts\out\ProductRepository;
 
 class CreateProductUseCase implements CreateProductUseCasePort
 {
@@ -12,8 +12,8 @@ class CreateProductUseCase implements CreateProductUseCasePort
         private ProductRepository $repository
     ) {}
 
-    public function execute(Product $product): Product
+    public function execute(Product $product): void
     {
-        return $this->repository->save($product);
+        $this->repository->save($product);
     }
 }

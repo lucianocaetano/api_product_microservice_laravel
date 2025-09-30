@@ -37,7 +37,6 @@ class DDDStructure extends Command
 
         $this->makeDir("$modulePath/domain/entities");
         $this->makeDir("$modulePath/domain/value_objects");
-        $this->makeDir("$modulePath/domain/contracts");
 
         $this->makeDir("$modulePath/application/contracts/in");
         $this->makeDir("$modulePath/application/contracts/out");
@@ -63,7 +62,7 @@ class DDDStructure extends Command
             $this->info("✅ Routes entry point creado en {$basePath}/infrastructure/routes/api.php");
 
             $routeInclude = <<<PHP
-            Route::prefix('$path')->group(base_path('{$basePath}/infrastructure/routes/api.php'));
+            Route::prefix('/$path')->group(base_path('{$basePath}/infrastructure/routes/api.php'));
             PHP;
 
             $apiFile = base_path('routes/api.php');

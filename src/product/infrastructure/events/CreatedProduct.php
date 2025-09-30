@@ -12,7 +12,7 @@ class CreatedProduct
         private int $quantity,
         private int $amount,
         private string $currency,
-        private string $category_id
+        private string $category_slug
     ) {
         //
     }
@@ -52,8 +52,8 @@ class CreatedProduct
         return $this->quantity;
     }
 
-    public function getCategoryId(): string
+    public function getCategorySlug(): string
     {
-        return $this->category_id;
+        return $this->category_slug;
     }
 }

@@ -5,6 +5,9 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use RdKafka\Consumer;
 use RdKafka\TopicConf;
+use Src\category\infrastructure\events\CreatedCategory;
+use Src\category\infrastructure\events\DeletedCategory;
+use Src\category\infrastructure\events\UpdatedCategory;
 use Src\product\infrastructure\events\CreatedProduct;
 use Src\product\infrastructure\events\DeletedProduct;
 use Src\product\infrastructure\events\UpdatedProduct;
@@ -38,46 +41,88 @@ class KafkaConsumer extends Command
 
                         $payload = json_decode($message->payload, true);
 
+                        if($payload['event'] == 'category.created') {
+                            $data = $payload["payload"];
+                            $mediator->dispatch(
+                                new CreatedCategory(
+                                    $data['id'],
+                                    $data['slug'],
+                                    $data['name'],
+                                    $data['description'],
+                                    $data['quantity'],
+                                    $data['amount'],
+                                    $data['currency'],
+                                    $data['category_slug']
+                                )
+                            );
+                        }
+
+                        if($payload['event'] == 'category.deleted') {
+                            $data = $payload["payload"];
+                            $mediator->dispatch(
+                                new DeletedCategory(
+                                    $data['id'],
+                                )
+                            );
+                        }
+
+                        if($payload['event'] == 'category.updated') {
+                            $data = $payload["payload"];
+                            $mediator->dispatch(
+                                new UpdatedCategory(
+                                    $data['id'],
+                                    $data['slug'],
+                                    $data['name'],
+                                    $data['description'],
+                                    $data['quantity'],
+                                    $data['amount'],
+                                    $data['currency'],
+                                    $data['category_slug']
+                                )
+                            );
+                        }
+
                         if($payload['event'] == 'product.created') {
-                            $payload = $payload["payload"];
+                            $data = $payload["payload"];
                             $mediator->dispatch(
                                 new CreatedProduct(
-                                    $payload['id'],
-                                    $payload['slug'],
-                                    $payload['name'],
-                                    $payload['description'],
-                                    $payload['quantity'],
-                                    $payload['amount'],
-                                    $payload['currency'],
-                                    $payload['category_id']
+                                    $data['id'],
+                                    $data['slug'],
+                                    $data['name'],
+                                    $data['description'],
+                                    $data['quantity'],
+                                    $data['amount'],
+                                    $data['currency'],
+                                    $data['category_slug']
                                 )
                             );
                         }
 
                         if($payload['event'] == 'product.deleted') {
-                            $payload = $payload["payload"];
+                            $data = $payload["payload"];
                             $mediator->dispatch(
                                 new DeletedProduct(
-                                    $payload['id'],
+                                    $data['id'],
                                 )
                             );
                         }
 
                         if($payload['event'] == 'product.updated') {
-                            $payload = $payload["payload"];
+                            $data = $payload["payload"];
                             $mediator->dispatch(
                                 new UpdatedProduct(
-                                    $payload['id'],
-                                    $payload['slug'],
-                                    $payload['name'],
-                                    $payload['description'],
-                                    $payload['quantity'],
-                                    $payload['amount'],
-                                    $payload['currency'],
-                                    $payload['category_id']
+                                    $data['id'],
+                                    $data['slug'],
+                                    $data['name'],
+                                    $data['description'],
+                                    $data['quantity'],
+                                    $data['amount'],
+                                    $data['currency'],
+                                    $data['category_slug']
                                 )
                             );
                         }
+
                         break;
                     case -191:
                         break;

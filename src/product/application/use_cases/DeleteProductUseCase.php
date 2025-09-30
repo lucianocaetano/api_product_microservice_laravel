@@ -3,7 +3,7 @@
 namespace Src\product\application\use_cases;
 
 use Src\product\application\contracts\in\DeleteProductUseCasePort;
-use Src\product\models\repositories\ProductRepository;
+use Src\product\application\contracts\out\ProductRepository;
 
 class DeleteProductUseCase implements DeleteProductUseCasePort
 {
