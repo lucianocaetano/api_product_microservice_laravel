@@ -20,12 +20,21 @@ class MeilisearchProductRepository implements ProductRepository
         $page = $filter['page'] ?? 1;
         $perPage = $filter['perPage'] ?? 15;
 
-        $results = ModelsProduct::search($filter['search'] ?? '')
-            ->when(!empty($filter['name']), fn($query) => $query->where('name', $filter['name']))
-            ->when(!empty($filter['category_slug']), fn($query) => $query->where('category_slug', $filter['category_slug']))
-            ->when(!empty($filter['min_price']), fn($query) => $query->where('price', '>=', $filter['min_price']))
-            ->when(!empty($filter['max_price']), fn($query) => $query->where('price', '<=', $filter['max_price']))
-            ->paginate($perPage, 'page', $page);
+        $query = ModelsProduct::search($filter['search'] ?? '');
+
+        if (isset($filter['category_slug'])) {
+            $query->where('category_slug', $filter['category_slug']);
+        }
+
+        if (isset($filter['min_price']) && isset($filter['max_price'])) {
+            $query->whereBetween('price', [$filter['min_price'], $filter['max_price']]);
+        } elseif (isset($filter['min_price'])) {
+            $query->where('price', '>=', $filter['min_price']);
+        } elseif (isset($filter['max_price'])) {
+            $query->where('price', '<=', $filter['max_price']);
+        }
+
+        $results = $query->paginate($perPage, 'page', $page);
 
         return [
             'items' => array_map([$this, 'mapProduct'], $results->items()),
@@ -88,8 +97,13 @@ class MeilisearchProductRepository implements ProductRepository
 
     public function delete(string $id): void
     {
-        $product = ModelsProduct::findOrFail($id);
-        $product->unsearchable();
+        try {
+            $product = ModelsProduct::findOrFail($id);
+            $product->delete();
+            $product->unsearchable();
+        } catch (\Exception $_) {
+            return;
+        }
     }
 
     private function mapProduct(ModelsProduct $product): Product

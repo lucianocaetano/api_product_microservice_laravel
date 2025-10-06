@@ -22,6 +22,20 @@ class KafkaConsumer extends Command
         $conf = new \RdKafka\Conf();
         $conf->set('group.id', 'my-consumer-group');
 
+        $securityProtocol = getenv('KAFKA_SECURITY_PROTOCOL');
+        $saslMechanism   = getenv('KAFKA_SASL_MECHANISM');
+        $saslUsername    = getenv('KAFKA_SASL_USERNAME');
+        $saslPassword    = getenv('KAFKA_SASL_PASSWORD');
+
+        $mediator = app(MediatorEventInterface::class);
+
+        if ($securityProtocol && $saslMechanism && $saslUsername && $saslPassword) {
+            $conf->set('security.protocol', $securityProtocol);
+            $conf->set('sasl.mechanisms', $saslMechanism);
+            $conf->set('sasl.username', $saslUsername);
+            $conf->set('sasl.password', $saslPassword);
+        }
+
         $consumer = new Consumer($conf);
         $consumer->addBrokers(env('KAFKA_HOST'));
 
@@ -37,8 +51,6 @@ class KafkaConsumer extends Command
             if ($message) {
                 switch ($message->err) {
                     case 0:
-                        $mediator = app(MediatorEventInterface::class);
-
                         $payload = json_decode($message->payload, true);
 
                         if($payload['event'] == 'category.created') {
@@ -48,11 +60,7 @@ class KafkaConsumer extends Command
                                     $data['id'],
                                     $data['slug'],
                                     $data['name'],
-                                    $data['description'],
-                                    $data['quantity'],
-                                    $data['amount'],
-                                    $data['currency'],
-                                    $data['category_slug']
+                                    $data['parent']
                                 )
                             );
                         }
@@ -73,11 +81,7 @@ class KafkaConsumer extends Command
                                     $data['id'],
                                     $data['slug'],
                                     $data['name'],
-                                    $data['description'],
-                                    $data['quantity'],
-                                    $data['amount'],
-                                    $data['currency'],
-                                    $data['category_slug']
+                                    $data['parent'],
                                 )
                             );
                         }

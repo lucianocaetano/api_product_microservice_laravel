@@ -11,9 +11,12 @@ class Product extends Model
 
     protected $connection = 'mongodb';
     protected $collection = 'products';
+    protected $primaryKey = '_id';
+    protected $keyType = 'string';
+    public $incrementing = false;
 
     protected $fillable = [
-        'id',
+        '_id',
         'slug',
         'name',
         'description',

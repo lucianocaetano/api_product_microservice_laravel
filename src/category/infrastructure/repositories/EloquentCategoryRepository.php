@@ -1,6 +1,6 @@
 <?php
 
-namespace App\category\infrastructure\repositories;
+namespace Src\category\infrastructure\repositories;
 
 use Src\category\application\contracts\out\CategoryRepository;
 use Src\category\domain\entities\Category;
@@ -24,25 +24,19 @@ class EloquentCategoryRepository implements CategoryRepository {
 
     public function save(Category $category): void
     {
-
-        ModelsCategory::create([
-            "_id" => $category->getId(),
-            "slug" => $category->getSlug(),
-            "name" => $category->getName(),
-            "parent" => $category->getParent(),
-        ]);
+        ModelsCategory::updateOrCreate(
+            ['_id' => $category->getId()],
+            [
+                'slug' => $category->getSlug(),
+                'name' => $category->getName(),
+                'parent' => $category->getParent(),
+            ]
+        );
     }
 
     public function update(Category $category): void
     {
-        $model = ModelsCategory::where("_id", $category->getId())->first();
-
-        $model->update([
-            "slug" => $category->getSlug(),
-            "name" => $category->getName(),
-            "slug" => $category->getSlug(),
-            "parent" => $category->getParent(),
-        ]);
+        $this->save($category);
     }
 
     public function delete(string $slug): void

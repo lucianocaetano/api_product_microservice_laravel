@@ -61,7 +61,5 @@ networks:
 volumes:
     sail-mongodb:
         driver: local
-    sail-redis:
-        driver: local
     sail-meilisearch:
         driver: local

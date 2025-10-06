@@ -40,11 +40,22 @@ class ProductController extends Controller {
     public function show(string $id) {
         $product = $this->getByIdProductUseCase->execute($id);
 
-        return response()->json([
+        return response()->json(
             $this->mapDomainToArray(
                 $product
             )
-        ]);
+        );
+    }
+
+    public function show_by_slug(string $slug) {
+        //TODO: create a use case form find a product by its slug
+        $product = $this->getByIdProductUseCase->execute($slug);
+
+        return response()->json(
+            $this->mapDomainToArray(
+                $product
+            )
+        );
     }
 
     private function mapDomainToArray(Product $product) {

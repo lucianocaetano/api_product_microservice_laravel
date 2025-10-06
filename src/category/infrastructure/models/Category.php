@@ -8,11 +8,12 @@ class Category extends Model {
 
     protected $connection = 'mongodb';
     protected $collection = 'categories';
-    public $incrementing = false;
+    protected $primaryKey = '_id';
     protected $keyType = 'string';
+    public $incrementing = false;
 
     protected $fillable = [
-        'id',
+        '_id',
         'slug',
         'name',
         'parent',

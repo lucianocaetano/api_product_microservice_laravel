@@ -17,7 +17,6 @@ class CreatedProductHandler
     public function handle(CreatedProduct $event): void
     {
         $this->createProductUseCase->execute(
-
             new Product(
                 $event->getId(),
                 $event->getSlug(),

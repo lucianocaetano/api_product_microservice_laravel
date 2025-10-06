@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Src\product\application\contracts\in\CreateProductUseCasePort;
 use Src\product\application\contracts\in\DeleteProductUseCasePort;
 use Src\product\application\contracts\in\GetAllProductUseCasePort;
-use Src\product\application\contracts\in\GetByCategorySlugProductUseCasePort;
+use Src\product\application\contracts\in\GetByCategorySlugProductsUseCasePort;
 use Src\product\application\contracts\in\GetByIdProductUseCasePort;
 use Src\product\application\contracts\in\UpdateProductUseCasePort;
 use Src\product\application\contracts\out\ProductRepository;
@@ -40,7 +40,7 @@ class ProductServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            GetByCategorySlugProductUseCasePort::class,
+            GetByCategorySlugProductsUseCasePort::class,
             GetByCategorySlugProductUseCase::class
         );
 

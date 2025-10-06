@@ -1,10 +1,10 @@
 <?php
 
-namespace Src\product\infrastructure\handlers;
+namespace Src\category\infrastructure\handlers;
 
 use Src\category\application\contracts\in\CreateCategoryUseCasePort;
-use Src\product\domain\entities\Product;
-use Src\product\infrastructure\events\CreatedProduct;
+use Src\category\domain\entities\Category;
+use Src\category\infrastructure\events\CreatedCategory;
 
 class CreatedCategoryHandler
 {
@@ -12,19 +12,15 @@ class CreatedCategoryHandler
         private CreateCategoryUseCasePort $createCategoryUseCase
     ) {}
 
-    public function handle(CreatedProduct $event): void
+    public function handle(CreatedCategory $event): void
     {
-        $this->createProductUseCase->execute(
+        $this->createCategoryUseCase->execute(
 
-            new Product(
+            new Category(
                 $event->getId(),
                 $event->getSlug(),
                 $event->getName(),
-                $event->getDescription(),
-                $event->getQuantity(),
-                $event->getAmount(),
-                $event->getCurrency(),
-                $event->getCategorySlug()
+                $event->getParent()
             )
         );
     }
