@@ -5,3 +5,4 @@ use Src\product\infrastructure\controllers\ProductController;
 
 Route::get('', [ProductController::class, 'index']);
 Route::get('/{id}', [ProductController::class, 'show']);
+Route::get('/{slug}', [ProductController::class, 'getByCategorySlug']);
